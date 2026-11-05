@@ -1,0 +1,18 @@
+# Arquivos locais, credenciais e IDEs
+.env
+.env.*
+!.env.example
+*.local.*
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+
+# Artefatos específicos da área
+*.tfstate
+*.tfstate.*
+.terraform/
+*.pem
+*.key
+*.pfx
+*.p12
