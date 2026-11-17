@@ -1,9 +1,11 @@
 # Pendências reais em 17/11/2026
 
-- Executar o pipeline com Oracle e conferir todos os resultados.
+- CI com Oracle, CRUD, SELECT, persistência e proxy aprovado; referência em validacao.md.
 - Publicar o workflow reutilizável na main DevOps e o gancho na API Java.
-- Autenticar a conta Azure, conferir crédito/quota e criar a VM por CLI.
+- Confirmar a conta Azure correta: a sessão pessoal não apresenta assinatura; conta FIAP aguarda confirmação.
+- Conferir crédito/quota e criar a VM por CLI.
 - Implantar, executar CRUD, SELECT e teste de persistência na VM.
+- Publicar HTTPS, registrar URL real e validar o aplicativo no aparelho físico.
 - Configurar a identidade OIDC/variáveis e confirmar deploy automático real.
 - Cadastrar SPTRANS_TOKEN somente no ambiente privado, se forem demonstradas chamadas externas.
 - Confirmar turma da GS para identificação final; o README Java informa apenas 2TDS.

@@ -9,8 +9,9 @@ da sprint anterior a esta GS.
 | --- | --- |
 | README e arquitetura | Mobilidade acessível; API Java e Oracle na VM, rede e volume |
 | Azure Cloud Shell Bash | Saída de provision.sh e VM running; foi criada via CLI |
-| Dockerfile e Compose | Maven gera JAR; imagem final roda Java como UID 10001; db saudável antes da API |
-| Run Command na VM | compose ps, logs, exec id, pwd e ls; dois containers em background |
+| Dockerfile e Compose | Maven gera JAR; Java roda como UID 10001; healthcheck espera o schema Oracle |
+| Run Command na VM | compose ps, logs, exec id, pwd e ls; API e Oracle em background |
+| Acesso pelo celular | DNS, Caddy e HTTPS público; Swagger externo e mesma ocorrência vista no app e Oracle |
 | Teste CRUD | Cadastro JWT, criar/consultar/atualizar ocorrência, entrada inválida |
 | SELECT direto no Oracle | Duas tabelas relacionadas e JOIN; dados realmente persistidos |
 | Recriar containers | down SEM -v, up, login e consulta do mesmo registro; depois DELETE e 404 |
@@ -28,6 +29,7 @@ Para a banca:
 - O JAR é a aplicação Java compilada; o JRE é quem a executa.
 - A API usa usuário de aplicação no Oracle, e não SYS; o processo Java usa UID 10001.
 - OIDC permite ao GitHub autenticar na Azure sem guardar uma senha permanente.
+- Caddy recebe HTTPS em 443 e encaminha para a API na rede Docker; o banco não é público.
 - O runner é descartável; a VM Azure é a máquina usada na entrega e na banca.
 
 A apresentação presencial vale 30 pontos e todos podem receber perguntas.

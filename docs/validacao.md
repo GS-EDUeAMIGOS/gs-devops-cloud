@@ -1,35 +1,52 @@
 # Validação - 17/11/2026
 
-## Conferências executadas no ambiente de preparação
+## Execução aprovada no GitHub Actions
 
-- Leitura do enunciado DevOps e análise dos repositórios Java, Banco e DevOps.
-- Fonte Java analisada: e627711b3e971ead00e0234e407b9528e7e32096.
-- SQL original: 1464861a8670921e5cd5ab5ddf881ca9d5bf4101; cópia conferida por hash.
-- Sintaxe Bash dos scripts, parse de YAML e sintaxe Python verificados.
-- Geração de .env testada em diretório temporário: permissão 600 e recusa de sobrescrita confirmadas.
-- Links locais conferidos e SVG da arquitetura renderizado e revisado.
+- Run: https://github.com/GS-EDUeAMIGOS/gs-devops-cloud/actions/runs/44167072340
+- Head da branch testada: `6a04348fd01564c565ba04406faffaa1cae284a0`.
+- Fonte Java: `e627711b3e971ead00e0234e407b9528e7e32096`.
+- Job `validar`: **success**. Deploy Azure: **skipped**, ainda desativado.
+- [Trechos do log](../evidence/ci-2026-11-17.txt), com timestamps UTC e sem credenciais.
 
-## Não executado / bloqueios
+| Verificação realmente executada | Resultado |
+| --- | --- |
+| Maven verify | 9 testes; zero falhas, erros ou ignorados; BUILD SUCCESS |
+| Dockerfile Java 21 | Imagem compilada e iniciada; processo UID/GID 10001; /opt/viacidada |
+| Oracle XE 21 | Inicialização com SQL original; cinco tabelas; schema validado pelo Hibernate |
+| HTTP | Swagger, OpenAPI, saúde e ocorrências funcionando |
+| CRUD com JWT | Cadastro e criação 201; leitura e alteração 200; entrada inválida 400 |
+| Consulta direta ao Oracle | SELECT com JOIN do mesmo usuário e ocorrência |
+| Persistência | Ambos os containers removidos e recriados; login, ID e título preservados |
+| Exclusão via API | DELETE 204 seguido de GET 404 |
+| Caddy | Configuração válida e encaminhamento interno para a saúde da API aprovado |
 
-O comando `bash mvnw -B -ntp test` foi tentado no checkout Java. O Maven não
-conseguiu baixar o parent Spring Boot 3.4.5 por falha de resolução de rede para
-repo.maven.apache.org. Isso não é um teste aprovado nem uma falha funcional
-comprovada da API.
+Os dois primeiros runs identificaram incompatibilidades reais: a senha aleatória
+excedia o limite do Oracle XE e o SQLPlus precisava aceitar linhas em branco.
+O gerador passou a usar senhas de 26 caracteres; o wrapper ativa SQLBLANKLINES,
+monta o SQL fora dos scripts automáticos e só marca o banco como saudável após
+terminar a inicialização. O arquivo SQL do grupo permaneceu idêntico ao original.
 
-Docker não está disponível neste ambiente. Build da imagem, inicialização do
-Oracle, validação Hibernate, CRUD e persistência ainda dependem da execução do
-Actions ou da VM. A conexão Oracle FIAP não foi usada.
+## Conferências adicionais
 
-O conector GitHub retornou 403 ao tentar criar a branch. Arquivos preparados
-localmente não são considerados publicados até confirmação no repositório.
+- Leitura do enunciado DevOps e análise dos repositórios Java, Banco, Mobile e DevOps.
+- SQL original: `1464861a8670921e5cd5ab5ddf881ca9d5bf4101`; hash conferido.
+- Sintaxe Bash, YAML e Python; links locais e arquitetura SVG/PNG conferidos.
+- Geração de .env em diretório temporário: permissão 600 e recusa de sobrescrita.
+- Credenciais recebidas no chat não foram incluídas nos arquivos publicados.
 
-## Critérios para registrar sucesso
+O Maven local não conseguiu resolver dependências por limitação de rede, mas o
+mesmo comando de validação foi executado com sucesso no runner GitHub.
+Docker não existe no ambiente de preparação; a execução acima aconteceu no CI.
 
-1. Job de validação aprovado, incluindo Oracle e recriação dos containers.
-2. VM running criada por CLI, com saída real registrada.
-3. VIACIDADA_DEPLOY_OK e VIACIDADA_VERIFY_OK na VM.
-4. SELECT com JOIN mostrando usuário/ocorrência e VIACIDADA_PERSISTENCE_OK.
-5. Um novo commit Java provocar deploy do mesmo SHA na VM.
+## Pendente na nuvem
 
-Atualize este registro com URLs de runs, SHAs e data depois de executar. Não
-substitua os resultados reais por um checklist marcado automaticamente.
+O sucesso do CI não comprova deploy Azure, emissão de certificado ou uso pelo
+celular. A conta pessoal encontrada na Azure não exibe assinatura; é preciso
+confirmar a conta de estudante antes de acessar os créditos.
+
+Ainda faltam: criar a VM por CLI, implantar, repetir CRUD/SELECT/persistência,
+ativar DNS/HTTPS e testar pelo celular. Depois, configurar OIDC e variáveis e
+confirmar que um commit Java atualiza o mesmo SHA na VM. O token SPTrans deve
+ficar no ambiente privado; os serviços externos exigem teste próprio.
+
+Não há evidência de nuvem, vídeo ou PDF final ainda. O Oracle FIAP não foi usado.
