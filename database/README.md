@@ -15,6 +15,12 @@ A imagem cria o usuário APP_USER; `01-init.sh` conecta com esse usuário e exec
 o SQL. Isso acontece somente em volume novo. Scripts não executam DROP nem
 alteram entidades Java. A API valida o schema na inicialização.
 
+O wrapper configura `SQLBLANKLINES ON` para aceitar as linhas em branco do SQL
+original. O schema é montado em `/opt/viacidada-schema`, fora do diretório de
+scripts automáticos. Um marcador no volume só é criado após o SQL terminar sem
+erro; o healthcheck exige esse marcador antes de liberar a API.
+As senhas geradas têm 26 caracteres, dentro do limite de 30 bytes do Oracle XE.
+
 Se houver mudança futura de schema, combine a migração com o responsável por
 Banco/Java. Reiniciar o container não aplica migrations e não reexecuta este SQL.
 Nunca remova o volume para "atualizar" dados existentes.
