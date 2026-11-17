@@ -1,0 +1,12 @@
+.git
+.env
+.env.*
+!.env.example
+.evidence-private
+.build/java/.git
+.build/java/target
+.build/java/.env*
+.build/java/evidence
+*.zip
+*.key
+*.pem

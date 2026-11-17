@@ -16,3 +16,9 @@ Thumbs.db
 *.key
 *.pfx
 *.p12
+
+# Fonte temporária, credenciais e dados privados dos testes
+.build/
+.evidence-private/
+__pycache__/
+*.pyc

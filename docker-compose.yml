@@ -1,0 +1,62 @@
+name: viacidada
+services:
+  db:
+    image: gvenzl/oracle-xe:21-slim-faststart
+    restart: unless-stopped
+    environment:
+      ORACLE_PASSWORD: ${ORACLE_PASSWORD:?Gere o arquivo .env}
+      APP_USER: viacidada
+      APP_USER_PASSWORD: ${ORACLE_APP_PASSWORD:?Gere o arquivo .env}
+    ports:
+      - "127.0.0.1:${DB_PORT:-1521}:1521"
+    volumes:
+      - oracle-data:/opt/oracle/oradata
+      - ./database:/container-entrypoint-initdb.d:ro
+    networks: [backend]
+    shm_size: 1g
+    mem_limit: 3g
+    healthcheck:
+      test: [CMD, healthcheck.sh]
+      interval: 15s
+      timeout: 10s
+      retries: 40
+      start_period: 90s
+    logging:
+      driver: json-file
+      options: {max-size: "10m", max-file: "3"}
+  api:
+    image: ${API_IMAGE:-viacidada-api:local}
+    build: {context: ., dockerfile: Dockerfile}
+    restart: unless-stopped
+    environment:
+      SPRING_PROFILES_ACTIVE: oracle
+      ORACLE_DB_URL: jdbc:oracle:thin:@//db:1521/XEPDB1
+      ORACLE_DB_USERNAME: viacidada
+      ORACLE_DB_PASSWORD: ${ORACLE_APP_PASSWORD:?Gere o arquivo .env}
+      ORACLE_DDL_AUTO: validate
+      ORACLE_SHOW_SQL: "false"
+      JWT_SECRET: ${JWT_SECRET:?Gere o arquivo .env}
+      JWT_EXPIRATION_MS: "86400000"
+      CORS_ALLOWED_ORIGINS: ${CORS_ALLOWED_ORIGINS:-http://localhost:3000}
+      SPTRANS_TOKEN: ${SPTRANS_TOKEN:-}
+      SERVER_PORT: "8080"
+      MANAGEMENT_ENDPOINT_HEALTH_SHOW_DETAILS: never
+      MANAGEMENT_ENDPOINTS_WEB_EXPOSURE_INCLUDE: health,info
+      JAVA_TOOL_OPTIONS: -XX:MaxRAMPercentage=65
+    ports:
+      - "${API_BIND:-127.0.0.1}:${API_PORT:-8080}:8080"
+    depends_on:
+      db: {condition: service_healthy}
+    networks: [backend]
+    mem_limit: 1536m
+    security_opt: [no-new-privileges:true]
+    cap_drop: [ALL]
+    logging:
+      driver: json-file
+      options: {max-size: "10m", max-file: "3"}
+volumes:
+  oracle-data:
+    name: viacidada-oracle-data
+networks:
+  backend:
+    name: viacidada-backend

@@ -1,67 +1,183 @@
-# gs-devops-cloud
+# ViaCidadã - DevOps e Cloud
 
-**FIAP — Global Solution 2026/2 — CitizenTech**  
-**Disciplina:** DevOps Tools & Cloud Computing
+Global Solution 2026/2 - CitizenTech | FIAP | DevOps Tools & Cloud Computing.
 
-> Estado: preparação documental inicial. Não há aplicação, testes executados, infraestrutura provisionada ou entrega concluída neste repositório.
+A ViaCidadã apoia a mobilidade urbana acessível e o registro de problemas de
+acessibilidade no transporte. Esta entrega executa a API Java do grupo e um Oracle
+em dois containers integrados, dentro de uma VM Ubuntu na Azure.
 
-## Finalidade e limites
+**Estado em 17/11/2026:** implementação preparada; sintaxe de scripts, Python e YAML
+verificada. A execução completa no Docker/Oracle, o GitHub Actions e a implantação
+na Azure ainda precisam de confirmação real. O Maven local ficou bloqueado pelo
+acesso de rede ao repositório de dependências. Não há vídeo ou PDF final publicado.
 
-Infraestrutura reproduzível em VM Azure via CLI, Docker e Compose, integrando API e banco em containers.
+## Arquitetura
 
-Este repositório representa um **entregável acadêmico da GS**, não o produto completo nem um entregável do Challenge. Os sete repositórios devem representar a mesma solução CitizenTech (slide 20). A solução, o nome do grupo, os integrantes, RMs, turma e responsáveis ainda precisam de confirmação específica para esta GS.
+![Arquitetura ViaCidadã](docs/arquitetura.svg)
 
-Nenhum código, modelo de domínio ou identidade do Challenge foi copiado. Reutilização futura deve ter origem principal, versão e revisão combinadas; separar entregas não significa duplicar implementação sem controle.
+- `api`: Java 21, Spring Boot 3.4.5, JWT, porta 8080, usuário `10001:10001`.
+- `db`: Oracle XE 21 em `db:1521/XEPDB1`, usuário da aplicação `viacidada`.
+- Rede Compose `viacidada-backend`; a API encontra o banco pelo nome `db`.
+- Volume `viacidada-oracle-data`: mantém os dados ao recriar os containers.
+- Cinco tabelas do grupo; `tb_vc_ocorrencia.usuario_id` referencia `tb_vc_usuario.id`.
+- `depends_on: service_healthy`: a API espera o Oracle estar pronto.
+- A VM usa Run Command; não há regra pública de entrada para SSH, Oracle ou API.
+  O `127.0.0.1` das demonstrações pertence à VM Azure, não ao computador do aluno.
 
-## Fonte e prazo
+Docker padroniza a aplicação e suas dependências. Compose descreve como os dois
+serviços se conectam e persistem dados. A Azure fornece a máquina, disco e rede.
+O Actions testa a integração e, depois de configurado, atualiza a VM automaticamente.
 
-Fonte primária fornecida pelo usuário: `2TDS Agosto - Global Solution 2026-2.pptx`, slides 36–43. Orientações gerais: slides 11–16 e 20; submissão: slides 81–85. A numeração é a posição real dos slides no PPTX, não o contador interno de cada disciplina.
+## 1. Executar com Docker
 
-- **Entrega indicada: 19/11/2026, até 23h55, no Portal FIAP** (slide 14).
-- Cadastro do grupo indicado até **13/11/2026** (slides 12 e 14); notas do arquivo pedem confirmação desse prazo.
-- Apresentações indicadas de **23 a 27/11/2026**; conferir modalidade e agenda com o professor.
-- Este checklist é derivado do PPTX, não substitui rubrica final e instruções do Portal. O original não foi republicado.
+Requisitos: Linux x86_64 (ou VM Linux), Git, Python 3, Docker com Compose V2,
+8 GiB de RAM e espaço livre para as imagens e o volume Oracle. Para compilar sem
+Docker, Java 21 e Maven Wrapper. O Oracle XE desta configuração é x86_64.
 
-## Escopo e checklist
+```bash
+git clone https://github.com/GS-EDUeAMIGOS/gs-devops-cloud.git
+cd gs-devops-cloud
+python3 scripts/init-env.py
+bash scripts/prepare-source.sh
+docker compose config --quiet
+docker compose build api
+docker compose up -d --no-build --wait --wait-timeout 900
+bash scripts/verify.sh
+```
 
-Veja [requisitos da disciplina](docs/requisitos-gs.md) e [decisões e pendências](docs/pendencias.md).
+A primeira inicialização do Oracle pode demorar vários minutos. O `.env` é gerado
+com senhas aleatórias e permissão 600. Nunca publique esse arquivo. `.env.example`
+documenta as variáveis; não contém credenciais reais. `SPTRANS_TOKEN` é opcional
+para o CRUD e necessário para consultas reais da integração externa. Cadastre-o
+somente no `.env` privado do servidor. Não use credenciais do Oracle da FIAP aqui.
 
-Este repositório começa somente com documentação. Não há Dockerfile, Compose, scripts Azure executáveis nem ambiente provisionado nesta preparação.
+URLs locais: `http://127.0.0.1:8080/swagger-ui/index.html`,
+`http://127.0.0.1:8080/v3/api-docs` e `http://127.0.0.1:8080/actuator/health`.
+O perfil ativo é `oracle`, não H2. Não existem os usuários de seed do perfil H2:
+o teste cria um cidadão fictício pelo endpoint de cadastro.
 
-## Equipe e responsabilidade
+### Fonte Java e banco
 
-| Informação | Situação |
-|---|---|
-| Grupo, solução e cidadão beneficiado | A confirmar para a GS |
-| Integrantes, RM e turma | A confirmar para a GS |
-| Responsável principal desta disciplina | A confirmar — um único dono por tarefa |
-| Revisor | A combinar conforme fronteiras afetadas |
+O [código-fonte Java completo](https://github.com/GS-EDUeAMIGOS/gs-java-api) pertence
+ao repositório da disciplina Java. `.java-ref` fixa a versão padrão e
+`scripts/prepare-source.sh` baixa exatamente esse commit para `.build/java`, pasta
+ignorada pelo Git. Isso evita duas cópias divergentes do código da API.
+O Dockerfile compila essa fonte com Maven e copia somente o JAR para a imagem final.
 
-Não interpretar membros da organização ou integrantes do Challenge como composição aprovada da GS. Documentar ODS e contribuição às metas conforme slide 11, usando fontes para alegações de impacto.
+O [SQL original do banco](database/README.md) vem de `gs-database` e é executado
+somente na primeira inicialização de um volume novo, no usuário `viacidada`.
+A API usa `ORACLE_DDL_AUTO=validate`, sem modificar o schema. A estrutura existente
+no Oracle compartilhado da FIAP não é acessada nem alterada por estes scripts.
 
-## Execução e testes
+## 2. Demonstrar CRUD, SELECT e persistência
 
-Ainda não há software executável. Na implementação, substituir esta seção por pré-requisitos e versões reais, configuração sem segredos, comandos reproduzíveis, dados sintéticos e resultados de testes efetivamente executados. Não há build ou teste aprovado apenas pela existência desta documentação.
+```bash
+python3 scripts/smoke-crud.py create
+bash scripts/select-db.sh
+docker compose down
+docker compose up -d --no-build --wait --wait-timeout 900
+python3 scripts/smoke-crud.py check
+python3 scripts/smoke-crud.py cleanup
+```
 
-## Evidências e submissão
+Ou execute `bash scripts/test-persistence.sh` para fazer a sequência completa.
+O teste cadastra cidadão (201), cria ocorrência (201), consulta (200), atualiza
+(200), verifica entrada inválida (400), recria ambos os containers, confirma o
+mesmo usuário/ocorrência, exclui a ocorrência (204) e confirma ausência (404).
+O `SELECT` é executado dentro do Oracle e faz JOIN das duas tabelas relacionadas.
+O usuário sintético permanece para não exigir privilégios administrativos na API.
+O estado privado do teste fica em `.evidence-private`, ignorado pelo Git.
 
-PDF com identificação da solução e integrantes/RMs/turma, link do GitHub público e link do vídeo não listado no YouTube; enviar pelo Portal FIAP (slide 42).
+**Não use `down -v` na VM:** isso remove o volume. Somente o runner de CI usa essa
+opção ao limpar seu próprio banco descartável.
 
-Organização das evidências: [evidence/README.md](evidence/README.md). Orientações de submissão: [delivery/README.md](delivery/README.md). Links de vídeo, diagramas e publicação permanecem pendentes; nenhum artefato final foi gerado.
+```bash
+docker compose ps -a
+docker compose logs --tail 60 api db
+docker compose exec api sh
+docker compose exec -T api id
+docker compose exec -T api pwd
+docker compose exec -T db id
+docker volume inspect viacidada-oracle-data
+```
 
-## Repositórios relacionados da GS
+## 3. Criar e implantar na Azure
 
-- [gs-dotnet-api](https://github.com/GS-EDUeAMIGOS/gs-dotnet-api) — Advanced Business Development with .NET
-- [gs-arquitetura-qa](https://github.com/GS-EDUeAMIGOS/gs-arquitetura-qa) — Compliance, Quality Assurance & Tests
-- [gs-iot-redes](https://github.com/GS-EDUeAMIGOS/gs-iot-redes) — Disruptive Architectures: IoT, IoB & Generative IA
-- [gs-java-api](https://github.com/GS-EDUeAMIGOS/gs-java-api) — Java Advanced
-- [gs-database](https://github.com/GS-EDUeAMIGOS/gs-database) — Mastering Relational and Non-Relational Database
-- [gs-mobile-flutter](https://github.com/GS-EDUeAMIGOS/gs-mobile-flutter) — Mobile Application Development
+No Azure Cloud Shell, selecione **Bash**. Confira assinatura, região e quota:
 
-As referências acima organizam entregas; não significam que todas as aplicações serão serviços separados do produto. Registrar contratos entre Java/.NET, Banco, Mobile, IoT e DevOps antes de integrar.
+```bash
+az account list -o table
+export AZURE_SUBSCRIPTION_ID="ID_DA_ASSINATURA_ESCOLHIDA"
+export AZURE_LOCATION=eastus
+export VM_SIZE=Standard_D2s_v4
+git clone https://github.com/GS-EDUeAMIGOS/gs-devops-cloud.git
+cd gs-devops-cloud
+bash azure/provision.sh
+bash azure/deploy.sh
+bash azure/verify-vm.sh
+bash azure/test-persistence-vm.sh
+```
 
-## Contribuição e segurança
+O script cria `rg-viacidada-gs` e `vm-viacidada-gs`, Ubuntu 22.04, 2 vCPU/8 GiB,
+disco Standard de 64 GB. Região e tamanho podem ser ajustados conforme a assinatura.
+A criação interrompe se o grupo já existir. A VM recebe Docker e Compose pelo
+repositório oficial Docker. O deploy compila na própria VM e verifica saúde.
+Credenciais novas são geradas na VM em `/opt/viacidada/runtime.env` e preservadas
+nas atualizações. Os releases ficam em `/opt/viacidada/releases`, e `current` aponta
+para a versão ativa. Não exclua o volume nem gere senhas novas em cada deploy.
 
-Veja [CONTRIBUTING.md](CONTRIBUTING.md). Não versionar senhas, tokens, strings de conexão reais ou dados pessoais de usuários. Exemplos devem usar valores fictícios.
+O deploy precisa de commits publicados no GitHub. Um commit apenas local não pode
+ser baixado pela VM. Para implantar outra versão Java revisada:
 
-A preparação não configura equipes, permissões, CODEOWNERS, proteção de branches, CI ou deploy. Repositório público não substitui entrega no Portal nem comprova atendimento da rubrica.
+```bash
+export JAVA_SHA="SHA_COMPLETO_DO_COMMIT_JAVA"
+bash azure/deploy.sh
+```
+
+## 4. Atualizar a nuvem ao publicar no GitHub
+
+O workflow [.github/workflows/ci-cd.yml](.github/workflows/ci-cd.yml) testa a API e
+o Compose com Oracle real no runner. O teste de persistência recria os containers.
+O deploy só começa após esse job passar e com `AZURE_DEPLOY_ENABLED=true`.
+
+O gancho Java está documentado em [automação](docs/automacao.md). Ao fazer push
+na `main` Java, ele chama este workflow com o SHA da API. Pull requests executam
+somente validação. A VM compila exatamente os commits testados, com nova imagem
+etiquetada pelo SHA; não usa uma tag `latest` para escolher a versão da API.
+
+A integração usa OIDC e Azure Run Command, sem senha de service principal, chave
+SSH em secret ou porta 22 aberta. A configuração inicial de identidade e variáveis
+precisa ser feita uma vez. Até lá, CI funciona e o job de deploy fica desativado.
+
+## 5. Entrega e apresentação
+
+- [Conferência dos requisitos](docs/requisitos-gs.md).
+- [Roteiro de gravação e defesa](docs/apresentacao.md).
+- [Resultados efetivamente obtidos](docs/validacao.md).
+- [Pendências](docs/pendencias.md) e [entrega](delivery/README.md).
+
+Entrega indicada no enunciado: **19/11/2026, até 23h55**. Apresentação presencial
+na aula de **23 a 27/11**, valendo 30%. Confirme o dia da sua turma.
+Esta GS exige solução em nuvem para a apresentação: não exclua a VM após o vídeo.
+Para economizar entre sessões, use `bash azure/deallocate.sh`; disco/IP podem
+continuar consumindo crédito. Reinicie com `az vm start -g rg-viacidada-gs -n vm-viacidada-gs`.
+Depois da avaliação, `azure/cleanup.sh` permite excluir o grupo com confirmação.
+
+## Equipe
+
+Responsável por DevOps: Erick Ramos Santos. Nomes/RMs conferidos no README Java;
+a identificação específica da turma deve ser confirmada antes do PDF final.
+
+| Integrante | RM |
+| --- | --- |
+| Alisson Kawan Evangelista Silva | 567598 |
+| Kenji Fernandes Wakabayashi | 568156 |
+| Erick Ramos Santos | 567837 |
+| Eduardo Boni dos Santos | 567236 |
+| Marcos Vinicius de Jesus Almeida | 567214 |
+
+## Uso de IA
+
+Assistente de IA apoiou a preparação dos scripts, testes de infraestrutura e
+documentação. Resultados executados e pendências estão identificados separadamente.
+O grupo deve revisar, entender e defender a implementação na apresentação.
