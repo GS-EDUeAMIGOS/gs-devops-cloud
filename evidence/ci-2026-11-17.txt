@@ -1,0 +1,46 @@
+Evidência extraída do GitHub Actions, sem credenciais.
+Run: https://github.com/GS-EDUeAMIGOS/gs-devops-cloud/actions/runs/44167072340
+Job: 134335866367 (validar), success
+Head: 6a04348fd01564c565ba04406faffaa1cae284a0
+Data: 17/11/2026; timestamps do log em UTC.
+Escopo: runner descartável do CI; não comprova implantação Azure ou certificado público.
+Trechos selecionados; log completo disponível no run.
+
+2026-11-17T20:15:54.3954047Z [INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.799 s -- in br.com.viacidada.OlhoVivoRoteamentoTests
+2026-11-17T20:16:03.2939582Z [INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 8.932 s -- in br.com.viacidada.ViaCidadaApplicationTests
+2026-11-17T20:16:03.3708995Z [INFO] Tests run: 9, Failures: 0, Errors: 0, Skipped: 0
+2026-11-17T20:16:05.5230523Z [INFO] BUILD SUCCESS
+2026-11-17T20:16:37.4836195Z #16 18.13 [INFO] BUILD SUCCESS
+2026-11-17T20:17:53.8649331Z HTTP 200 /swagger-ui/index.html
+2026-11-17T20:17:54.6872965Z HTTP 200 /v3/api-docs
+2026-11-17T20:17:54.8293918Z HTTP 200 /api/ocorrencias
+2026-11-17T20:17:55.1545865Z uid=10001(viacidada) gid=10001(viacidada) groups=10001(viacidada)
+2026-11-17T20:17:55.4316908Z VIACIDADA_VERIFY_OK
+2026-11-17T20:17:56.6443386Z HTTP 201 POST /api/auth/register
+2026-11-17T20:17:56.6443793Z HTTP 201 POST /api/ocorrencias
+2026-11-17T20:17:56.6444123Z HTTP 200 GET /api/ocorrencias/1
+2026-11-17T20:17:56.6444427Z HTTP 200 PUT /api/ocorrencias/1
+2026-11-17T20:17:56.6444742Z HTTP 400 POST /api/ocorrencias
+2026-11-17T20:17:56.6445517Z VIACIDADA_CRUD_CREATE_UPDATE_OK: usuário e ocorrência relacionados no Oracle.
+2026-11-17T20:17:56.8232458Z TB_VC_ALERTA
+2026-11-17T20:17:56.8232632Z TB_VC_LINHA_FAVORITA
+2026-11-17T20:17:56.8232809Z TB_VC_OCORRENCIA
+2026-11-17T20:17:56.8233384Z TB_VC_PARADA_FAVORITA
+2026-11-17T20:17:56.8233554Z TB_VC_USUARIO
+2026-11-17T20:17:56.8283634Z 	 1 Rampa atualizada DevOps 9830056b
+2026-11-17T20:17:56.8284241Z Cidadão fictício DevOps
+2026-11-17T20:18:15.9396275Z HTTP 200 /swagger-ui/index.html
+2026-11-17T20:18:16.7253434Z HTTP 200 /v3/api-docs
+2026-11-17T20:18:16.9198489Z HTTP 200 /api/ocorrencias
+2026-11-17T20:18:17.0755973Z uid=10001(viacidada) gid=10001(viacidada) groups=10001(viacidada)
+2026-11-17T20:18:17.3550448Z VIACIDADA_VERIFY_OK
+2026-11-17T20:18:17.7137647Z HTTP 200 POST /api/auth/login
+2026-11-17T20:18:17.7138420Z HTTP 200 GET /api/ocorrencias/1
+2026-11-17T20:18:17.7139719Z VIACIDADA_PERSISTENCE_CHECK_OK: mesmo usuário, ocorrência e título após recriação.
+2026-11-17T20:18:17.9717816Z HTTP 200 POST /api/auth/login
+2026-11-17T20:18:17.9718245Z HTTP 204 DELETE /api/ocorrencias/1
+2026-11-17T20:18:17.9718609Z HTTP 404 GET /api/ocorrencias/1
+2026-11-17T20:18:17.9719341Z VIACIDADA_CRUD_DELETE_OK: ocorrência sintética removida.
+2026-11-17T20:18:17.9804805Z VIACIDADA_PERSISTENCE_OK
+2026-11-17T20:18:20.8092607Z Valid configuration
+2026-11-17T20:18:23.2994779Z VIACIDADA_PROXY_TEST_OK

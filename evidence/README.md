@@ -12,3 +12,7 @@ Ainda não há evidência real de implantação aprovada. Registre após executa
 
 O texto docs/validacao.md registra somente verificações efetivamente executadas.
 Saídas com senhas/tokens ficam fora do Git. Não publique `.evidence-private`.
+
+## CI executado
+
+[Log selecionado de 17/11/2026](ci-2026-11-17.txt): Java, Oracle, CRUD, JOIN, persistência e proxy aprovados. Este log pertence ao runner; evidências Azure e celular ainda não existem.
