@@ -59,6 +59,19 @@ origem real do site em `CORS_ALLOWED_ORIGINS`, separando origens por vírgula.
 
 ## Conferir integração real antes de gravar
 
+O manifesto principal Android analisado não declara `INTERNET`. Antes de gerar o
+APK de entrega, o responsável Mobile deve incluir esta linha dentro de
+`<manifest>`, antes de `<application>`, em
+`android/app/src/main/AndroidManifest.xml`:
+
+```xml
+<uses-permission android:name="android.permission.INTERNET" />
+```
+
+O template permite rede durante o desenvolvimento, mas a permissão também deve
+estar no manifesto principal para a versão release. Referência:
+[documentação Flutter](https://docs.flutter.dev/data-and-backend/networking).
+
 1. Abrir a saúde e o Swagger pelo navegador do celular, usando dados móveis.
 2. Cadastrar um usuário novo pela API. O Oracle isolado não possui os usuários de demonstração H2.
 3. Entrar no app, criar uma ocorrência fictícia e anotar seu ID.

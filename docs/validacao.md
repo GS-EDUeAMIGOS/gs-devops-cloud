@@ -26,6 +26,13 @@ O gerador passou a usar senhas de 26 caracteres; o wrapper ativa SQLBLANKLINES,
 monta o SQL fora dos scripts automáticos e só marca o banco como saudável após
 terminar a inicialização. O arquivo SQL do grupo permaneceu idêntico ao original.
 
+## Integração publicada
+
+- [PR DevOps #1](https://github.com/GS-EDUeAMIGOS/gs-devops-cloud/pull/1) integrado na main.
+- [CI da main DevOps](https://github.com/GS-EDUeAMIGOS/gs-devops-cloud/actions/runs/44169000660): success.
+- [PR Java #7](https://github.com/GS-EDUeAMIGOS/gs-java-api/pull/7) adiciona somente o workflow de 15 linhas e foi integrado na main.
+- [Chamada Java → DevOps](https://github.com/GS-EDUeAMIGOS/gs-java-api/actions/runs/44169181037): job `devops / validar` aprovado, com os mesmos testes de integração. Job Azure ignorado por estar desativado.
+
 ## Conferências adicionais
 
 - Leitura do enunciado DevOps e análise dos repositórios Java, Banco, Mobile e DevOps.

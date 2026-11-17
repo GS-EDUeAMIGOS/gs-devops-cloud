@@ -1,7 +1,7 @@
 # Pendências reais em 17/11/2026
 
 - CI com Oracle, CRUD, SELECT, persistência e proxy aprovado; referência em validacao.md.
-- Publicar o workflow reutilizável na main DevOps e o gancho na API Java.
+- Workflows integrados nas duas branches main; falta habilitar e comprovar o deploy Azure.
 - Confirmar a conta Azure correta: a sessão pessoal não apresenta assinatura; conta FIAP aguarda confirmação.
 - Conferir crédito/quota e criar a VM por CLI.
 - Implantar, executar CRUD, SELECT e teste de persistência na VM.

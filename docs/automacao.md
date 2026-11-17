@@ -31,9 +31,11 @@ jobs:
       java_sha: ${{ github.sha }}
 ```
 
-Este gancho está preparado também no checkout Java. Publicá-lo depois que o
-workflow reutilizável estiver na `main` DevOps, para evitar referência inexistente.
-A chamada reutilizável não precisa de PAT nem de secrets do banco.
+O workflow reutilizável foi integrado na main DevOps pelo PR #1. O gancho Java
+foi integrado pelo [PR #7](https://github.com/GS-EDUeAMIGOS/gs-java-api/pull/7), após
+[CI entre os repositórios aprovado](https://github.com/GS-EDUeAMIGOS/gs-java-api/actions/runs/44169181037).
+A chamada reutilizável não precisa de PAT nem de secrets do banco. A etapa de
+deploy Azure continua desativada até preparar a VM, a identidade e as variáveis.
 
 ## Configuração inicial na Azure
 
