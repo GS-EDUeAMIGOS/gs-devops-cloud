@@ -1,7 +1,18 @@
-# Evidências — DevOps Tools & Cloud Computing
+# Evidências
 
-Ainda não há evidências de implementação ou execução.
+Ainda não há evidência real de implantação aprovada. Registre após executar:
 
-Registrar futuramente, conforme [checklist](../docs/requisitos-gs.md), capturas, testes, resultados e links exigidos pela disciplina. Cada evidência deve indicar requisito/slide, versão ou commit, ambiente e resultado observável. Usar dados sintéticos e ocultar credenciais, tokens e informações sensíveis.
+1. Saída CLI da criação e VM running.
+2. docker compose ps com API e Oracle saudáveis, em background.
+3. Logs sem segredos; exec id, pwd e ls.
+4. CRUD HTTP com usuário e ocorrência relacionados.
+5. SELECT/JOIN executado no Oracle do container.
+6. Recriação dos dois containers sem -v e consulta dos mesmos dados.
+7. URL do Actions aprovado e, após configuração, atualização automática da VM.
 
-Imagens de exemplo, documentação e arquivos vazios não demonstram funcionalidade. Não apresentar mocks como integração real nem localhost como execução Azure.
+O texto docs/validacao.md registra somente verificações efetivamente executadas.
+Saídas com senhas/tokens ficam fora do Git. Não publique `.evidence-private`.
+
+## CI executado
+
+[Log selecionado de 17/11/2026](ci-2026-11-17.txt): Java, Oracle, CRUD, JOIN, persistência e proxy aprovados. Este log pertence ao runner; evidências Azure e celular ainda não existem.

@@ -1,0 +1,106 @@
+name: ViaCidada - CI e Azure
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      java_sha:
+        description: SHA Java completo (vazio usa .java-ref)
+        required: false
+        type: string
+  workflow_call:
+    inputs:
+      java_sha:
+        required: true
+        type: string
+permissions:
+  contents: read
+jobs:
+  validar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    outputs:
+      java_sha: ${{ steps.refs.outputs.java_sha }}
+      devops_sha: ${{ steps.refs.outputs.devops_sha }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          repository: GS-EDUeAMIGOS/gs-devops-cloud
+          ref: ${{ github.repository == 'GS-EDUeAMIGOS/gs-devops-cloud' && github.sha || 'main' }}
+      - name: Resolver versões e preparar fonte Java
+        id: refs
+        shell: bash
+        env:
+          JAVA_REF: ${{ inputs.java_sha }}
+        run: |
+          set -euo pipefail
+          bash scripts/prepare-source.sh "${JAVA_REF:-$(cat .java-ref)}"
+          echo "java_sha=$(cat .build/java.sha)" >> "$GITHUB_OUTPUT"
+          echo "devops_sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+          cache: maven
+          cache-dependency-path: .build/java/pom.xml
+      - name: Testar a API Java
+        working-directory: .build/java
+        run: bash mvnw -B -ntp verify
+      - name: Conferir scripts e gerar ambiente isolado
+        run: |
+          find scripts azure database -name '*.sh' -print0 | xargs -0 -n1 bash -n
+          python3 -m py_compile scripts/*.py
+          python3 scripts/init-env.py
+          docker compose config --quiet
+      - name: Construir a imagem da API
+        run: docker compose build --pull api
+      - name: Iniciar Oracle e API
+        run: docker compose up -d --no-build --wait --wait-timeout 900
+      - name: Validar HTTP, usuário, diretórios, CRUD, SELECT e persistência
+        run: |
+          bash scripts/verify.sh
+          bash scripts/test-persistence.sh
+      - name: Validar proxy de acesso do aplicativo
+        run: bash scripts/test-proxy.sh
+      - name: Logs e estado dos containers
+        if: always()
+        run: |
+          if [ -f .env ]; then
+            docker compose ps -a
+            docker compose logs --no-color --tail 80 api db
+          fi
+      - name: Encerrar apenas o ambiente descartável do runner
+        if: always()
+        run: |
+          if [ -f .env ]; then docker compose down -v; fi
+  implantar:
+    needs: validar
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main' && vars.AZURE_DEPLOY_ENABLED == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    permissions:
+      contents: read
+      id-token: write
+    concurrency:
+      group: viacidada-azure
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          repository: GS-EDUeAMIGOS/gs-devops-cloud
+          ref: ${{ needs.validar.outputs.devops_sha }}
+      - uses: azure/login@v2
+        with:
+          client-id: ${{ vars.AZURE_CLIENT_ID }}
+          tenant-id: ${{ vars.AZURE_TENANT_ID }}
+          subscription-id: ${{ vars.AZURE_SUBSCRIPTION_ID }}
+      - name: Implantar as mesmas versões testadas
+        env:
+          AZURE_SUBSCRIPTION_ID: ${{ vars.AZURE_SUBSCRIPTION_ID }}
+          RESOURCE_GROUP: ${{ vars.AZURE_RESOURCE_GROUP || 'rg-viacidada-gs' }}
+          VM_NAME: ${{ vars.AZURE_VM_NAME || 'vm-viacidada-gs' }}
+          DEVOPS_SHA: ${{ needs.validar.outputs.devops_sha }}
+          JAVA_SHA: ${{ needs.validar.outputs.java_sha }}
+        run: bash azure/deploy.sh

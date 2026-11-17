@@ -1,23 +1,16 @@
-# Submissão — DevOps Tools & Cloud Computing
+# Entrega DevOps GS
 
-**Estado: pendente. Nenhum arquivo final foi gerado ou submetido.**
+Prazo geral indicado: 19/11/2026 até 23h55 no Portal FIAP.
 
-## Fonte e prazo
+O PDF final deverá conter ViaCidadã, nomes/RMs/turma, GitHub e vídeo YouTube.
+Repositório: https://github.com/GS-EDUeAMIGOS/gs-devops-cloud
+Fonte Java: https://github.com/GS-EDUeAMIGOS/gs-java-api
+Vídeo e PDF final: pendentes da execução real, gravação e confirmação da turma.
 
-`2TDS Agosto - Global Solution 2026-2.pptx`, slides 36–43; orientações gerais no slide 14 e passo a passo nos slides 81–85.
+Vídeo: não listado, mínimo 720p, com explicação, VM Azure, Compose, containers,
+CRUD, logs, persistência e SELECT. Não há limite de tempo explícito na seção DevOps
+fornecida. Confira o formulário da atividade antes de enviar; se aceitar somente
+ZIP/RAR/7zip, compacte o PDF no formato permitido.
 
-Prazo indicado: **19/11/2026, até 23h55, no Portal FIAP**. Conferir o trabalho específico no Portal antes de submeter.
-
-## Formato da disciplina
-
-PDF com identificação da solução e integrantes/RMs/turma, link do GitHub público e link do vídeo não listado no YouTube; enviar pelo Portal FIAP (slide 42).
-
-## Conferência final
-
-- [ ] Confirmar integrantes, RM, turma e nome do grupo GS.
-- [ ] Conferir requisito e embalagem específica, sem substituir instruções por modelo genérico.
-- [ ] Validar links de repositório/vídeo em sessão sem login quando exigido acesso público.
-- [ ] Conferir requisitos e evidências verdadeiras, legíveis e sem segredos.
-- [ ] Conferir arquivo final e registro da submissão no Portal.
-
-Criação deste repositório não equivale à entrega acadêmica. Não preencher links, nomes, resultados ou declarações de uso de IA fictícios.
+Não entregue placeholders de link. Teste GitHub e vídeo sem depender da sua conta.
+A submissão no portal é uma etapa do grupo e não é realizada por publicar no GitHub.
