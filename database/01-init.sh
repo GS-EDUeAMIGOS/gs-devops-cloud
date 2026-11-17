@@ -5,7 +5,10 @@ set -euo pipefail
 sqlplus -s /nolog <<SQL
 WHENEVER OSERROR EXIT FAILURE
 WHENEVER SQLERROR EXIT SQL.SQLCODE
+SET SQLBLANKLINES ON
+SET DEFINE OFF
 CONNECT ${APP_USER}/"${APP_USER_PASSWORD}"@//localhost:1521/XEPDB1
-@/container-entrypoint-initdb.d/schema/CREATE_TABELAS.sql
+@/opt/viacidada-schema/CREATE_TABELAS.sql
 EXIT SUCCESS
 SQL
+touch /opt/oracle/oradata/.viacidada-schema-ready
