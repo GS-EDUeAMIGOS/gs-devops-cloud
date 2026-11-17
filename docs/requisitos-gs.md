@@ -1,44 +1,30 @@
-# Checklist — DevOps Tools & Cloud Computing
+# Conferência - DevOps GS 2026/2
 
-## Fonte e interpretação
+Fonte: PDF fornecido pelo grupo, seção DevOps Tools & Cloud Computing 1/7 a 7/7.
+O prazo geral indicado é 19/11/2026 às 23h55. A entrega técnica vale 70 pontos;
+a apresentação presencial, 30. A seção DevOps não informa limite de duração do
+vídeo. O limite do pitch de Java é outra entrega, e não deve ser confundido com ela.
 
-`2TDS Agosto - Global Solution 2026-2.pptx`, slides 36–43. Orientações gerais: slides 11–16 e 20; submissão: slides 81–85. A numeração é a posição real dos slides no PPTX, não o contador interno de cada disciplina.
+| Critério | Pontos | Implementação / evidência necessária |
+| --- | --- | --- |
+| Arquitetura macro da solução | 10 | docs/arquitetura.svg; explicar serviços reais |
+| VM Azure e provisionamento CLI | 10 | azure/provision.sh; registrar saída da criação e VM running |
+| Container API e Dockerfile | 15 | Dockerfile, WORKDIR, USER, ENV no Compose, EXPOSE, execução -d |
+| Banco em container e persistência | 15 | Oracle, cinco tabelas, volume; comprovar recriação sem perda |
+| Compose e integração | 5 | docker-compose.yml: API, DB, network, volume, portas e healthcheck |
+| GitHub, How To e evidências | 15 | README, scripts, logs, exec, id, SELECT e vídeo acessível |
+| Defesa presencial | 30 | VM funcionando, Compose, banco, persistência, arquitetura e domínio técnico |
 
-Todos os itens abaixo permanecem pendentes. A documentação é uma síntese derivada, não transcrição integral nem promessa de nota. O PPTX contém notas editoriais e placeholders; consulte [pendências](pendencias.md) antes de tratar pontos ambíguos como definitivos.
+Preparar arquivos não equivale a executar. Confira docs/validacao.md para saber o
+que foi de fato testado. Os scripts cobrem os itens, mas evidências reais de nuvem
+continuam obrigatórias.
 
-## Requisitos e evidências
+Entregáveis: GitHub público com código-fonte, Dockerfile, Compose, script CLI,
+arquitetura e README; vídeo YouTube não listado, mínimo 720p, explicando VM,
+Compose, containers, CRUD, logs e SELECT; PDF com solução, integrantes/RMs/turma
+e links do GitHub e vídeo. Caso o portal aceite apenas ZIP, compacte esse PDF.
 
-- [ ] **Slide(s) 37–38:** Provisionar VM Microsoft Azure por Azure CLI e documentar os comandos utilizados.
-- [ ] **Slide(s) 37–38:** Instalar e configurar Docker, Dockerfile e Docker Compose na VM; executar containers na nuvem.
-- [ ] **Slide(s) 37–38:** Utilizar API Java ou .NET do grupo com CRUD completo e pelo menos duas tabelas relacionadas.
-- [ ] **Slide(s) 38:** Configurar container da aplicação com usuário não privilegiado, WORKDIR, variável de ambiente e porta necessária.
-- [ ] **Slide(s) 38:** Executar banco compatível em container, com volume nomeado, variável de ambiente, porta e persistência.
-- [ ] **Slide(s) 39:** Versionar docker-compose.yml com aplicação, banco, network, volume, portas, variáveis e dependências entre serviços.
-- [ ] **Slide(s) 39–41:** Demonstrar arquitetura macro real, containers em background, logs, acesso via exec, usuário, diretórios, CRUD, persistência e SELECT diretamente no banco.
-- [ ] **Slide(s) 42:** Publicar repositório público com código-fonte, Dockerfile, Compose, script Azure CLI, arquitetura e README/How To reproduzível.
-- [ ] **Slide(s) 42:** Produzir vídeo não listado no YouTube, mínimo 720p, demonstrando VM Azure, Compose, containers, CRUD, logs e SELECT; explicação legível conforme slide 41.
-- [ ] **Slide(s) 42:** Produzir PDF com nome da solução, integrantes, RM, turma e links do GitHub e vídeo.
-- [ ] **Slide(s) 43:** Preparar apresentação da solução em nuvem, aplicação, Compose, banco e volume, arquitetura e domínio técnico.
-
-## Condições gerais
-
-- [ ] Relacionar solução ao tema CitizenTech, problema real e cidadão beneficiado (slides 3–7).
-- [ ] Explicar ODS e contribuição às metas (slide 11).
-- [ ] Confirmar grupo de até cinco integrantes, identificação e cadastro (slides 12–14).
-- [ ] Confirmar instruções finais no Portal e submeter até 19/11/2026 às 23h55 (slide 14).
-- [ ] Conferir acesso aos links e legibilidade dos materiais, sem segredos ou dados reais.
-- [ ] Preparar a apresentação da disciplina conforme agenda confirmada.
-
-## Formato específico de entrega
-
-PDF com identificação da solução e integrantes/RMs/turma, link do GitHub público e link do vídeo não listado no YouTube; enviar pelo Portal FIAP (slide 42).
-
-A orientação geral de .txt em .zip não deve sobrescrever automaticamente formatos específicos .txt/PDF: conferir exigência da disciplina e do Portal.
-
-## Limites e observações
-
-Este repositório começa somente com documentação. Não há Dockerfile, Compose, scripts Azure executáveis nem ambiente provisionado nesta preparação.
-
-## Critério de conclusão
-
-Só marcar um requisito como concluído após anexar referência verificável (arquivo, commit, PR, teste, captura ou vídeo conforme o item) e revisar aderência ao enunciado. Não marcar automaticamente tarefas ou evidências pela criação do repositório.
+Penalidades relevantes: sem código/Dockerfile/Compose, somente localhost ou links
+inacessíveis pode zerar; sem SELECT/CRUD/duas tabelas, -20; How To/evidências
+incompletos, até -15; vídeo ilegível/abaixo de 720p/sem explicação, -20. A nota da
+arquitetura pode zerar se for genérica ou um fluxograma sem relação com a aplicação.
