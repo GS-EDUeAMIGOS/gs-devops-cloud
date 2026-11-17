@@ -62,6 +62,8 @@ jobs:
         run: |
           bash scripts/verify.sh
           bash scripts/test-persistence.sh
+      - name: Validar proxy de acesso do aplicativo
+        run: bash scripts/test-proxy.sh
       - name: Logs e estado dos containers
         if: always()
         run: |
