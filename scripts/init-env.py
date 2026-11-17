@@ -4,8 +4,9 @@ import os
 import secrets
 from pathlib import Path
 path = Path(__file__).resolve().parents[1] / '.env'
-content = ('ORACLE_PASSWORD=' + secrets.token_hex(24) + '\n'
-           'ORACLE_APP_PASSWORD=' + secrets.token_hex(24) + '\n'
+# Oracle XE limita a senha a 30 bytes; prefixo alfabético + 24 hex = 26.
+content = ('ORACLE_PASSWORD=Vc' + secrets.token_hex(12) + '\n'
+           'ORACLE_APP_PASSWORD=Vc' + secrets.token_hex(12) + '\n'
            'JWT_SECRET=' + secrets.token_hex(48) + '\n'
            'API_IMAGE=viacidada-api:local\nAPI_BIND=127.0.0.1\nAPI_PORT=8080\n'
            'DB_PORT=1521\nCORS_ALLOWED_ORIGINS=http://localhost:3000\nSPTRANS_TOKEN=\n')
