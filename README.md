@@ -4,12 +4,14 @@ Global Solution 2026/2 - CitizenTech | FIAP | DevOps Tools & Cloud Computing.
 
 A ViaCidadã apoia a mobilidade urbana acessível e o registro de problemas de
 acessibilidade no transporte. Esta entrega executa a API Java do grupo e um Oracle
-em dois containers integrados, dentro de uma VM Ubuntu na Azure.
+em containers integrados, dentro de uma VM Ubuntu na Azure. Um terceiro container,
+Caddy, oferece HTTPS para o aplicativo quando o perfil `public` está ativo.
 
-**Estado em 17/11/2026:** implementação preparada; sintaxe de scripts, Python e YAML
-verificada. A execução completa no Docker/Oracle, o GitHub Actions e a implantação
-na Azure ainda precisam de confirmação real. O Maven local ficou bloqueado pelo
-acesso de rede ao repositório de dependências. Não há vídeo ou PDF final publicado.
+**Estado em 17/11/2026:** CI aprovado com 9 testes Java, build Docker, Oracle
+real, CRUD autenticado, SELECT com JOIN, persistência após recriar os containers
+e encaminhamento do proxy. [Execução e evidências](docs/validacao.md).
+A implantação Azure, o HTTPS público e o teste no aparelho físico ainda estão
+pendentes do acesso à assinatura. Não há URL pública, vídeo ou PDF final validados.
 
 ## Arquitetura
 
@@ -21,8 +23,9 @@ acesso de rede ao repositório de dependências. Não há vídeo ou PDF final pu
 - Volume `viacidada-oracle-data`: mantém os dados ao recriar os containers.
 - Cinco tabelas do grupo; `tb_vc_ocorrencia.usuario_id` referencia `tb_vc_usuario.id`.
 - `depends_on: service_healthy`: a API espera o Oracle estar pronto.
-- A VM usa Run Command; não há regra pública de entrada para SSH, Oracle ou API.
-  O `127.0.0.1` das demonstrações pertence à VM Azure, não ao computador do aluno.
+- A administração usa Run Command; SSH, Oracle e a porta 8080 ficam privados.
+- O perfil `public` oferece HTTP/HTTPS em 80/443, com redirecionamento para HTTPS.
+  O `127.0.0.1` dos testes internos pertence à VM Azure, não ao computador do aluno.
 
 Docker padroniza a aplicação e suas dependências. Compose descreve como os dois
 serviços se conectam e persistem dados. A Azure fornece a máquina, disco e rede.
@@ -136,6 +139,11 @@ bash azure/deploy.sh
 
 ## 4. Atualizar a nuvem ao publicar no GitHub
 
+Para acesso do aplicativo no celular, depois do deploy execute
+`bash azure/publish-api.sh`. O procedimento e o ajuste da URL Flutter estão em
+[acesso Mobile](docs/acesso-mobile.md). O endereço só deve ser compartilhado após
+o teste externo emitir `VIACIDADA_PUBLIC_OK`.
+
 O workflow [.github/workflows/ci-cd.yml](.github/workflows/ci-cd.yml) testa a API e
 o Compose com Oracle real no runner. O teste de persistência recria os containers.
 O deploy só começa após esse job passar e com `AZURE_DEPLOY_ENABLED=true`.
@@ -153,6 +161,7 @@ precisa ser feita uma vez. Até lá, CI funciona e o job de deploy fica desativa
 
 - [Conferência dos requisitos](docs/requisitos-gs.md).
 - [Roteiro de gravação e defesa](docs/apresentacao.md).
+- [Endereço público e integração com o celular](docs/acesso-mobile.md).
 - [Resultados efetivamente obtidos](docs/validacao.md).
 - [Pendências](docs/pendencias.md) e [entrega](delivery/README.md).
 
