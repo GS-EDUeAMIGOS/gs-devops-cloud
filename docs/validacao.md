@@ -45,15 +45,26 @@ O Maven local não conseguiu resolver dependências por limitação de rede, mas
 mesmo comando de validação foi executado com sucesso no runner GitHub.
 Docker não existe no ambiente de preparação; a execução acima aconteceu no CI.
 
-## Pendente na nuvem
+## Azure executada em 18/11/2026
 
-O sucesso do CI não comprova deploy Azure, emissão de certificado ou uso pelo
-celular. A conta pessoal encontrada na Azure não exibe assinatura; é preciso
-confirmar a conta de estudante antes de acessar os créditos.
+- Conta FIAP confirmada pelo usuário; assinatura Azure for Students.
+- Região East US permitida pela política da assinatura; quota de CPU conferida.
+- `azure/provision.sh`: exit 0, Provisioning succeeded, VM running.
+- VM `vm-viacidada-gs`, grupo `rg-viacidada-gs`, Ubuntu 22.04, D2s v4, 2 vCPU e 8 GiB.
+- Deploy inicial: Java `bf49a23706fb79e49499718a338b07352113e9e0`; DevOps `b6e0234010029328d0bbd9d5dbd8296c01266b14`.
+- `VIACIDADA_DEPLOY_OK` e `VIACIDADA_VERIFY_OK` confirmados na VM.
+- CRUD, SELECT com JOIN e recriação dos dois containers aprovados; `VIACIDADA_PERSISTENCE_OK`.
+- A primeira publicação HTTPS identificou que o Azure Run Command inicia com `sh`.
+  O script passou a chamar Bash explicitamente; a nova execução aprovou HTTPS.
+- `VIACIDADA_PROXY_OK` e `VIACIDADA_PUBLIC_OK`; saúde, Swagger, OpenAPI e ocorrências com HTTPS 200.
+- [Swagger público](https://viacidada-3a46802b7054.eastus.cloudapp.azure.com/swagger-ui/index.html).
+- Identidade OIDC criada; federação nas duas branches main; papel somente na VM.
+- Token SPTrans configurado por entrada oculta no ambiente privado da VM. Consulta real retornou quatro linhas: `VIACIDADA_SPTRANS_OK linhas=4`.
+- O Oracle FIAP não foi usado. Credenciais reais permanecem no ambiente privado.
 
-Ainda faltam: criar a VM por CLI, implantar, repetir CRUD/SELECT/persistência,
-ativar DNS/HTTPS e testar pelo celular. Depois, configurar OIDC e variáveis e
-confirmar que um commit Java atualiza o mesmo SHA na VM. O token SPTrans deve
-ficar no ambiente privado; os serviços externos exigem teste próprio.
+## Próximas verificações
 
-Não há evidência de nuvem, vídeo ou PDF final ainda. O Oracle FIAP não foi usado.
+
+O primeiro deploy real por GitHub Actions ainda precisa ter seu resultado registrado. O teste do aplicativo no aparelho físico, o vídeo
+não listado e o PDF final continuam pendentes. O sucesso do CI e do backend não
+substitui a gravação ou a apresentação presencial.

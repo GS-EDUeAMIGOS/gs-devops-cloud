@@ -1,18 +1,24 @@
-# Pendências reais em 17/11/2026
+# O que falta para a entrega
 
-- CI com Oracle, CRUD, SELECT, persistência e proxy aprovado; referência em validacao.md.
-- Workflows integrados nas duas branches main; falta habilitar e comprovar o deploy Azure.
-- Confirmar a conta Azure correta: a sessão pessoal não apresenta assinatura; conta FIAP aguarda confirmação.
-- Conferir crédito/quota e criar a VM por CLI.
-- Implantar, executar CRUD, SELECT e teste de persistência na VM.
-- Publicar HTTPS, registrar URL real e validar o aplicativo no aparelho físico.
-- Configurar a identidade OIDC/variáveis e confirmar deploy automático real.
-- Cadastrar SPTRANS_TOKEN somente no ambiente privado, se forem demonstradas chamadas externas.
-- Confirmar turma da GS para identificação final; o README Java informa apenas 2TDS.
-- Gravar vídeo legível em 720p ou mais, publicar não listado e conferir o link.
-- Gerar PDF final com links reais e enviar no Portal FIAP (ZIP se exigido pelo formulário).
-- Manter a infraestrutura disponível para a apresentação de 23 a 27/11, no dia da turma.
+Atualização: 18/11/2026.
 
-Nenhuma senha recebida no chat foi gravada em arquivos públicos. O Oracle da FIAP
-não foi acessado. A leitura dos dois links compartilhados não trouxe o texto
-integral; foi usado o histórico recuperado e o enunciado fornecido.
+## Infraestrutura já conferida
+
+- VM Azure criada por CLI e em execução.
+- Docker, Java e Oracle funcionando dentro da VM.
+- CRUD, SELECT com JOIN e persistência aprovados na VM.
+- URL HTTPS pública, certificado e Swagger funcionando.
+- Identidade OIDC restrita à VM e CI de integração nos dois repositórios.
+
+## Ainda concluir
+
+- Registrar o primeiro deploy pelo Actions; a consulta SPTrans com token privado já retornou quatro linhas.
+- Responsável Mobile: configurar a URL pública, permissão Android INTERNET e testar no aparelho físico.
+- Confirmar a turma exata para a identificação da entrega; Java informa apenas 2TDS.
+- Gravar vídeo DevOps não listado, mínimo 720p, e conferir o link.
+- Gerar PDF final com integrantes/RMs/turma, GitHub e vídeo; enviar no formato aceito pelo Portal.
+- Conferir o dia da turma entre 23 e 27/11 e manter a solução disponível para a banca.
+
+Páginas 42 e 43 do enunciado enviado exigem vídeo e apresentação presencial,
+respectivamente. A seção DevOps não fixa duração máxima do vídeo. O guia para
+entender a solução e apresentar está em [guia-presencial.md](guia-presencial.md).

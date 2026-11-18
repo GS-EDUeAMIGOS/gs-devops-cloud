@@ -2,8 +2,14 @@
 
 ## Endereço da nuvem
 
-O endereço real será registrado aqui depois de criar a VM e aprovar o teste HTTPS.
-Ainda não há URL pública validada. Não use os exemplos abaixo como endereço ativo.
+Endereço HTTPS validado em 18/11/2026:
+
+- Base do Flutter: `https://viacidada-3a46802b7054.eastus.cloudapp.azure.com/api`
+- [Swagger público](https://viacidada-3a46802b7054.eastus.cloudapp.azure.com/swagger-ui/index.html)
+- [Saúde](https://viacidada-3a46802b7054.eastus.cloudapp.azure.com/actuator/health)
+
+O teste externo confirmou HTTP 200 nos quatro endpoints e certificado TLS válido.
+O aplicativo no aparelho físico ainda deve ser testado pelo responsável Mobile.
 
 Após o primeiro deploy, execute no Cloud Shell:
 
@@ -47,8 +53,8 @@ if (cloudUrl.isNotEmpty) {
 Depois, usando o domínio **real** exibido na publicação:
 
 ```bash
-flutter run --dart-define=API_BASE_URL=https://DOMINIO_REAL/api
-flutter build apk --dart-define=API_BASE_URL=https://DOMINIO_REAL/api
+flutter run --dart-define=API_BASE_URL=https://viacidada-3a46802b7054.eastus.cloudapp.azure.com/api
+flutter build apk --dart-define=API_BASE_URL=https://viacidada-3a46802b7054.eastus.cloudapp.azure.com/api
 ```
 
 Não foi alterado o código Mobile nesta entrega DevOps. A sugestão preserva os
@@ -82,9 +88,13 @@ O Mobile possui fallback com dados em memória quando a conexão falha. Uma tela
 com registros de demonstração sozinha não comprova conexão à Azure. Conferir o
 mesmo ID no Swagger e no Oracle demonstra que o app usou o backend publicado.
 
-As consultas SPTrans dependem do token privado configurado na VM. Aprovação do
-CRUD não prova que linhas, previsão, GPS e rotas externas estão funcionando.
-Esses caminhos precisam ser testados com o responsável Java/Mobile antes dos vídeos.
+O token SPTrans foi configurado no ambiente privado da VM. A busca de linhas por
+`8000` retornou quatro resultados reais. Previsões, GPS e planejamento de rotas
+precisam ser demonstrados com os dados escolhidos pelo responsável Java/Mobile.
+
+Para configurar ou substituir a chave de integração, use no Cloud Shell
+`bash azure/configure-sptrans.sh`: a entrada fica oculta, e o script reinicia
+somente a API e testa uma consulta. Não grave a chave em código, vídeo ou README.
 
 ## Validação técnica
 

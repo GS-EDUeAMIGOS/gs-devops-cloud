@@ -58,8 +58,8 @@ as seguintes **Variables**:
 | AZURE_CLIENT_ID | Client ID da identidade |
 | AZURE_TENANT_ID | Tenant ID da identidade |
 | AZURE_SUBSCRIPTION_ID | Assinatura usada |
-| AZURE_RESOURCE_GROUP | rg-viacidada-gs |
-| AZURE_VM_NAME | vm-viacidada-gs |
+| AZURE_RESOURCE_GROUP | Opcional; padrão rg-viacidada-gs |
+| AZURE_VM_NAME | Opcional; padrão vm-viacidada-gs |
 | AZURE_DEPLOY_ENABLED | true somente depois da preparação |
 
 Se a VM estiver desalocada, inicie-a antes do deploy. O workflow não cria a VM,

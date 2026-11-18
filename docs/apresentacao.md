@@ -1,5 +1,9 @@
 # Gravação e defesa - ViaCidadã
 
+Conferência do enunciado enviado: página 42 exige vídeo YouTube não listado em
+720p ou mais e PDF com os links; página 43 exige apresentação presencial separada.
+Para estudar a explicação sem decorar scripts, use o [guia presencial](guia-presencial.md).
+
 A seção DevOps da GS não fixa duração de vídeo. Use cerca de 5 a 7 minutos como
 organização de conteúdo, se o portal/professor não der outro limite. Isso é uma
 sugestão de roteiro, não uma regra do enunciado. Não aplique o limite de 3 minutos
