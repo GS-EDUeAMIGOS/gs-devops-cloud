@@ -1,0 +1,65 @@
+ViaCidada — evidências Azure observadas em 18/11/2026
+
+VM vm-viacidada-gs | rg-viacidada-gs | eastus
+Java bf49a23706fb79e49499718a338b07352113e9e0
+DevOps inicial b6e0234010029328d0bbd9d5dbd8296c01266b14
+Swagger https://viacidada-3a46802b7054.eastus.cloudapp.azure.com/swagger-ui/index.html
+
+Trechos filtrados dos logs do Cloud Shell (nomes dos arquivos preservados):
+viacidada-validation.log:HTTP 200 /swagger-ui/index.html
+viacidada-validation.log:HTTP 200 /v3/api-docs
+viacidada-validation.log:HTTP 200 /api/ocorrencias
+viacidada-validation.log:uid=10001(viacidada) gid=10001(viacidada) groups=10001(viacidada)
+viacidada-validation.log:VIACIDADA_VERIFY_OK
+viacidada-validation.log:TB_VC_ALERTA
+viacidada-validation.log:TB_VC_LINHA_FAVORITA
+viacidada-validation.log:TB_VC_OCORRENCIA
+viacidada-validation.log:TB_VC_PARADA_FAVORITA
+viacidada-validation.log:TB_VC_USUARIO
+viacidada-validation.log:HTTP 201 POST /api/auth/register
+viacidada-validation.log:HTTP 201 POST /api/ocorrencias
+viacidada-validation.log:HTTP 200 GET /api/ocorrencias/1
+viacidada-validation.log:HTTP 200 PUT /api/ocorrencias/1
+viacidada-validation.log:HTTP 400 POST /api/ocorrencias
+viacidada-validation.log:VIACIDADA_CRUD_CREATE_UPDATE_OK: usuário e ocorrência relacionados no Oracle.
+viacidada-validation.log:TB_VC_ALERTA
+viacidada-validation.log:TB_VC_LINHA_FAVORITA
+viacidada-validation.log:TB_VC_OCORRENCIA
+viacidada-validation.log:TB_VC_PARADA_FAVORITA
+viacidada-validation.log:TB_VC_USUARIO
+viacidada-validation.log: 1 Rampa atualizada DevOps af81071c
+viacidada-validation.log:Cidadão fictício DevOps
+viacidada-validation.log:HTTP 200 /swagger-ui/index.html
+viacidada-validation.log:HTTP 200 /v3/api-docs
+viacidada-validation.log:HTTP 200 /api/ocorrencias
+viacidada-validation.log:uid=10001(viacidada) gid=10001(viacidada) groups=10001(viacidada)
+viacidada-validation.log:VIACIDADA_VERIFY_OK
+viacidada-validation.log:HTTP 200 POST /api/auth/login
+viacidada-validation.log:HTTP 200 GET /api/ocorrencias/1
+viacidada-validation.log:VIACIDADA_PERSISTENCE_CHECK_OK: mesmo usuário, ocorrência e título após recriação.
+viacidada-validation.log:HTTP 200 POST /api/auth/login
+viacidada-validation.log:HTTP 204 DELETE /api/ocorrencias/1
+viacidada-validation.log:HTTP 404 GET /api/ocorrencias/1
+viacidada-validation.log:VIACIDADA_CRUD_DELETE_OK: ocorrência sintética removida.
+viacidada-validation.log:VIACIDADA_PERSISTENCE_OK
+viacidada-public.log:VIACIDADA_PROXY_OK
+viacidada-public.log:VIACIDADA_PUBLIC_OK
+
+O primeiro script de publicação HTTPS falhou por usar sh com pipefail;
+a correção passou a executar Bash explicitamente. As linhas PUBLIC_OK acima
+pertencem à nova execução, concluída com sucesso.
+
+Teste posterior pelo HTTPS público (sem recriar containers nessa segunda sequência):
+HTTP 201 POST /api/auth/register
+HTTP 201 POST /api/ocorrencias
+HTTP 200 GET /api/ocorrencias/2
+HTTP 200 PUT /api/ocorrencias/2
+HTTP 400 POST /api/ocorrencias
+HTTP 200 POST /api/auth/login
+HTTP 200 GET /api/ocorrencias/2
+HTTP 204 DELETE /api/ocorrencias/2
+HTTP 404 GET /api/ocorrencias/2
+HTTPS_SPTRANS_OK linhas=4
+
+A recriação real foi executada no teste da VM com ocorrência 1, registrado
+acima como VIACIDADA_PERSISTENCE_OK. Não foi um teste do aplicativo Flutter.

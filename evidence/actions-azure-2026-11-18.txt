@@ -1,0 +1,16 @@
+ViaCidada — deploy automatizado real em 18/11/2026
+Run https://github.com/GS-EDUeAMIGOS/gs-devops-cloud/actions/runs/44317679897
+Tentativa 2: validar success; implantar success.
+Job implantar 134852370301.
+Trechos selecionados do log; timestamps UTC.
+
+2026-11-18T13:56:55.6422662Z Federated token details:
+2026-11-18T13:56:55.6424649Z  subject claim - repo:GS-EDUeAMIGOS@352936590/gs-devops-cloud@1447109661:ref:refs/heads/main
+2026-11-18T13:56:55.6427134Z Attempting Azure CLI login by using OIDC...
+2026-11-18T13:56:56.9296133Z Azure CLI login succeeds by using OIDC.
+2026-11-18T13:58:30.4236435Z HTTP 200 /swagger-ui/index.html
+2026-11-18T13:58:30.4236733Z HTTP 200 /v3/api-docs
+2026-11-18T13:58:30.4237003Z HTTP 200 /api/ocorrencias
+2026-11-18T13:58:30.4248408Z uid=10001(viacidada) gid=10001(viacidada) groups=10001(viacidada)
+2026-11-18T13:58:30.4250998Z VIACIDADA_VERIFY_OK
+2026-11-18T13:58:30.4251615Z VIACIDADA_DEPLOY_OK java=bf49a23706fb79e49499718a338b07352113e9e0 devops=916d27d3232d19ff3231a2029ade4c35f2662e23

@@ -1,6 +1,11 @@
 # Evidências
 
-Ainda não há evidência real de implantação aprovada. Registre após executar:
+As verificações executadas estão em [validação](../docs/validacao.md).
+O [registro Azure de 18/11/2026](azure-2026-11-18.txt) contém trechos reais de
+CRUD, SELECT, persistência e publicação HTTPS. O teste do aplicativo no aparelho
+físico ainda depende do responsável Mobile.
+
+Para a gravação e a banca, demonstre:
 
 1. Saída CLI da criação e VM running.
 2. docker compose ps com API e Oracle saudáveis, em background.
@@ -15,4 +20,6 @@ Saídas com senhas/tokens ficam fora do Git. Não publique `.evidence-private`.
 
 ## CI executado
 
-[Log selecionado de 17/11/2026](ci-2026-11-17.txt): Java, Oracle, CRUD, JOIN, persistência e proxy aprovados. Este log pertence ao runner; evidências Azure e celular ainda não existem.
+[Log selecionado de 17/11/2026](ci-2026-11-17.txt): Java, Oracle, CRUD, JOIN,
+persistência e proxy aprovados no runner GitHub. Esse ambiente é separado da VM;
+as verificações da nuvem estão no registro de 18/11 acima.
