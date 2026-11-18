@@ -15,4 +15,11 @@ docker compose exec -T api id
 docker compose exec -T api pwd
 docker compose exec -T api ls -l /opt/viacidada
 docker compose exec -T db id
+docker compose exec -T db bash -c 'sqlplus -s /nolog <<SQL
+WHENEVER SQLERROR EXIT SQL.SQLCODE
+CONNECT ${APP_USER}/"${APP_USER_PASSWORD}"@//localhost:1521/XEPDB1
+UPDATE tb_vc_usuario SET role = '\''ROLE_ADMIN'\'' WHERE LOWER(email) = '\''admin@viacidada.com.br'\'';
+COMMIT;
+EXIT SUCCESS
+SQL'
 echo VIACIDADA_VERIFY_OK
