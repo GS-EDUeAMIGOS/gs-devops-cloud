@@ -93,7 +93,8 @@ lá pelo Run Command. No celular, usamos a URL HTTPS pública.
 
 **Por que Docker?** Para executar a aplicação com o mesmo ambiente definido no projeto.
 
-**Por que dois containers?** API e banco são processos diferentes, com dependências próprias.
+**Por que separar API e banco?** São processos diferentes, com dependências próprias.
+O terceiro container, Caddy, recebe as conexões HTTPS.
 
 **Por que Compose?** Para subir e conectar os serviços a partir de um único arquivo.
 

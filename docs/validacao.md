@@ -1,4 +1,4 @@
-# Validação - 17/11/2026
+# Validação - 17 e 18/11/2026
 
 ## Execução aprovada no GitHub Actions
 
@@ -60,11 +60,20 @@ Docker não existe no ambiente de preparação; a execução acima aconteceu no 
 - [Swagger público](https://viacidada-3a46802b7054.eastus.cloudapp.azure.com/swagger-ui/index.html).
 - Identidade OIDC criada; federação nas duas branches main; papel somente na VM.
 - Token SPTrans configurado por entrada oculta no ambiente privado da VM. Consulta real retornou quatro linhas: `VIACIDADA_SPTRANS_OK linhas=4`.
+- CRUD pelo HTTPS público também aprovado: cadastro e criação 201, leitura e alteração 200, validação 400, exclusão 204 e consulta posterior 404.
+- [Trechos de evidência Azure](../evidence/azure-2026-11-18.txt). A recriação real dos containers está no teste interno da VM; o CRUD HTTPS posterior foi uma verificação separada.
 - O Oracle FIAP não foi usado. Credenciais reais permanecem no ambiente privado.
+
+## Deploy automático confirmado em 18/11/2026
+
+- [Actions DevOps #18](https://github.com/GS-EDUeAMIGOS/gs-devops-cloud/actions/runs/44317679897), segunda tentativa: `validar` e `implantar` aprovados.
+- A primeira tentativa identificou o novo subject OIDC do GitHub, com IDs imutáveis. A federação foi corrigida para os mesmos repositórios e branches, mantendo o papel restrito à VM.
+- Login Azure OIDC aprovado, sem senha permanente. O Run Command publicou a mesma versão testada.
+- Java: `bf49a23706fb79e49499718a338b07352113e9e0`; DevOps: `916d27d3232d19ff3231a2029ade4c35f2662e23`.
+- Log às 13:58:30 UTC: `VIACIDADA_VERIFY_OK` e `VIACIDADA_DEPLOY_OK` com os dois SHAs acima.
 
 ## Próximas verificações
 
-
-O primeiro deploy real por GitHub Actions ainda precisa ter seu resultado registrado. O teste do aplicativo no aparelho físico, o vídeo
+O teste do aplicativo no aparelho físico, o vídeo
 não listado e o PDF final continuam pendentes. O sucesso do CI e do backend não
 substitui a gravação ou a apresentação presencial.

@@ -34,8 +34,9 @@ jobs:
 O workflow reutilizável foi integrado na main DevOps pelo PR #1. O gancho Java
 foi integrado pelo [PR #7](https://github.com/GS-EDUeAMIGOS/gs-java-api/pull/7), após
 [CI entre os repositórios aprovado](https://github.com/GS-EDUeAMIGOS/gs-java-api/actions/runs/44169181037).
-A chamada reutilizável não precisa de PAT nem de secrets do banco. A etapa de
-deploy Azure continua desativada até preparar a VM, a identidade e as variáveis.
+A chamada reutilizável não precisa de PAT nem de secrets do banco. A identidade
+e as variáveis já foram configuradas nos dois repositórios em 18/11/2026.
+O resultado de cada execução real está em [validação](validacao.md).
 
 ## Configuração inicial na Azure
 
@@ -44,6 +45,12 @@ Ele cria uma identidade gerenciada com federação para as branches `main` dos d
 repositórios e atribui `Virtual Machine Contributor` somente à VM desta entrega.
 Essa permissão permite executar comandos como root nessa VM; administradores dos
 repositórios devem controlar quem pode publicar nessas branches.
+
+A federação usa os IDs públicos da organização e dos repositórios no subject
+(`nome@ID`), exigidos pelo GitHub para repositórios novos desde julho de 2026.
+O formato foi conferido no log de autenticação. Reexecutar o script atualiza
+o subject existente, mantendo o papel restrito à mesma VM. Referência:
+[OIDC e identificadores imutáveis](https://docs.github.com/en/actions/reference/security/oidc#immutable-subject-claims).
 
 O script exige permissão de criar identidade e atribuir papel na assinatura.
 Se a conta de estudante não permitir, não habilite o deploy; use os comandos de

@@ -9,10 +9,11 @@ Atualização: 18/11/2026.
 - CRUD, SELECT com JOIN e persistência aprovados na VM.
 - URL HTTPS pública, certificado e Swagger funcionando.
 - Identidade OIDC restrita à VM e CI de integração nos dois repositórios.
+- Deploy automático DevOps pelo Actions aprovado; mesmas versões do Java e da infraestrutura conferidas no log.
+- SPTrans com token privado: consulta real retornou quatro linhas.
 
 ## Ainda concluir
 
-- Registrar o primeiro deploy pelo Actions; a consulta SPTrans com token privado já retornou quatro linhas.
 - Responsável Mobile: configurar a URL pública, permissão Android INTERNET e testar no aparelho físico.
 - Confirmar a turma exata para a identificação da entrega; Java informa apenas 2TDS.
 - Gravar vídeo DevOps não listado, mínimo 720p, e conferir o link.
