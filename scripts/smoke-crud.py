@@ -71,9 +71,9 @@ elif mode in ('check', 'cleanup'):
         assert item['titulo'] == state['payload']['titulo'] and item['usuarioId'] == state['user_id']
         print('VIACIDADA_PERSISTENCE_CHECK_OK: mesmo usuário, ocorrência e título após recriação.')
     else:
-        call('DELETE', path, 204, token=auth['token'])
-        call('GET', path, 404)
+        call('DELETE', path, 403, token=auth['token'])
+        call('GET', path, 200)
         state_file.unlink()
-        print('VIACIDADA_CRUD_DELETE_OK: ocorrência sintética removida.')
+        print('VIACIDADA_CRUD_RBAC_DELETE_FORBIDDEN_OK: cidadão impedido de remover ocorrência (403).')
 else:
     raise SystemExit('Uso: python3 scripts/smoke-crud.py create|check|cleanup')
