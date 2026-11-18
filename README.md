@@ -7,13 +7,18 @@ acessibilidade no transporte. Esta entrega executa a API Java do grupo e um Orac
 em containers integrados, dentro de uma VM Ubuntu na Azure. Um terceiro container,
 Caddy, oferece HTTPS para o aplicativo quando o perfil `public` está ativo.
 
-**Estado em 17/11/2026:** CI aprovado com 9 testes Java, build Docker, Oracle
-real, CRUD autenticado, SELECT com JOIN, persistência após recriar os containers
-e encaminhamento do proxy. [Execução e evidências](docs/validacao.md).
-A implantação Azure, o HTTPS público e o teste no aparelho físico ainda estão
-pendentes do acesso à assinatura. Não há URL pública, vídeo ou PDF final validados.
+**Estado em 18/11/2026:** API e Oracle implantados na VM Azure; CRUD, SELECT e
+persistência aprovados na nuvem. HTTPS externo validado. CI aprovado com 9 testes
+Java e integração Docker/Oracle. [Resultados e pendências](docs/validacao.md).
+
+**API para o app:** `https://viacidada-3a46802b7054.eastus.cloudapp.azure.com/api`  
+**Documentação interativa:** [Swagger](https://viacidada-3a46802b7054.eastus.cloudapp.azure.com/swagger-ui/index.html).  
+Para testar no aparelho, siga o [guia Mobile](docs/acesso-mobile.md). Vídeo, PDF e
+teste do aplicativo no celular ainda precisam ser concluídos.
 
 ## Arquitetura
+
+Para explicar e demonstrar na banca: [guia presencial, com uma fala de 30 segundos e dois comandos](docs/guia-presencial.md).
 
 ![Arquitetura ViaCidadã](docs/arquitetura.svg)
 
