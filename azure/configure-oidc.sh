@@ -12,11 +12,20 @@ principal=$(az identity show -g "$rg" -n "$identity" --query principalId -o tsv)
 vm_id=$(az vm show -g "$rg" -n "$vm" --query id -o tsv)
 az role assignment create --assignee-object-id "$principal" --assignee-principal-type ServicePrincipal \
   --role 'Virtual Machine Contributor' --scope "$vm_id" -o none
-for repository in gs-devops-cloud gs-java-api; do
-  if ! az identity federated-credential show -g "$rg" --identity-name "$identity" -n "$repository-main" -o none 2>/dev/null; then
+# IDs públicos fixam a confiança nos repositórios originais, mesmo se um nome for reutilizado.
+# Formato OIDC dos repositórios criados após 15/07/2026: nome@ID.
+for repository_spec in gs-devops-cloud:1447109661 gs-java-api:1447110058; do
+  repository=${repository_spec%:*}
+  repository_id=${repository_spec##*:}
+  subject="repo:GS-EDUeAMIGOS@352936590/$repository@$repository_id:ref:refs/heads/main"
+  if az identity federated-credential show -g "$rg" --identity-name "$identity" -n "$repository-main" -o none 2>/dev/null; then
+    az identity federated-credential update -g "$rg" --identity-name "$identity" -n "$repository-main" \
+      --issuer https://token.actions.githubusercontent.com --subject "$subject" \
+      --audiences api://AzureADTokenExchange -o none
+  else
     az identity federated-credential create -g "$rg" --identity-name "$identity" -n "$repository-main" \
       --issuer https://token.actions.githubusercontent.com \
-      --subject "repo:GS-EDUeAMIGOS/$repository:ref:refs/heads/main" \
+      --subject "$subject" \
       --audiences api://AzureADTokenExchange -o none
   fi
 done
