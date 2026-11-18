@@ -44,8 +44,9 @@ docker compose --profile public up -d --no-build --wait --wait-timeout 900
 echo VIACIDADA_PROXY_OK
 REMOTE
 )
+script=$(printf "DOMAIN='%s' bash -s <<'VIACIDADA_PUBLIC'\n" "$domain"; printf '%s\n' "$remote"; printf 'VIACIDADA_PUBLIC\n')
 output=$(az vm run-command invoke -g "$rg" -n "$vm" --command-id RunShellScript \
-  --scripts "DOMAIN='$domain'" "$remote" --query 'value[].message' -o tsv)
+  --scripts "$script" --query 'value[].message' -o tsv)
 printf '%s\n' "$output"
 [[ $output == *VIACIDADA_PROXY_OK* ]] || { echo 'Proxy não confirmou inicialização.'; exit 1; }
 bash "$(dirname "$0")/../scripts/verify-public.sh" "https://$domain"
